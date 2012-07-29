@@ -20,6 +20,7 @@ from zope import schema, interface
 from zope.i18nmessageid import MessageFactory
 from zope.app.container.interfaces import ISimpleReadContainer
 from zope.interface import Interface
+from zope.app.folder.interfaces import IFolder
 
 _ = MessageFactory('zojax.containertraverser')
 
@@ -32,3 +33,11 @@ class IContainerTraverserConfiglet(interface.Interface):
         default = False,
         required = True)
 
+class ICaseInsensitiveFolder(Interface):
+     """Marker for folders whose contained items keys are case insensitive.
+
+     When traversing in this folder, all names will be converted to lower
+     case. For example, if the traverser requests an item called `Foo`, in
+     reality the first item matching `foo` or any upper-and-lowercase
+     variants are looked up in the container."""
+ 

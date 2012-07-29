@@ -29,7 +29,7 @@
   <interface interface=".interfaces.ICustomContainerTraverser" name="ICustomContainerTraverser"/>
 
   <class class="zojax.contenttype.document.document.Document">
-    <implements interface=".interfaces.ICustomContainerTraverser"/>
+    <implements interface=".interfaces.ICaseInsensitiveFolder"/>
   </class>
   <view 
      for=".ICaseInsensitiveFolder" 
@@ -41,14 +41,14 @@
 
   -->
 
-  <class class="zope.app.folder.folder.Folder">
-    <implements interface=".ICaseInsensitiveFolder"/>
+  <class class="zojax.folder.folder.Folder">
+    <implements interface=".interfaces.ICaseInsensitiveFolder"/>
   </class>
-  <view
-     for="*"
-     type="zope.publisher.interfaces.browser.IBrowserRequest"
-     factory=".CaseInsensitiveFolderTraverser"
-     provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+
+  <adapter
+     for=".interfaces.ICaseInsensitiveFolder zope.publisher.interfaces.browser.IBrowserRequest"
+     factory=".traverser.CaseInsensitiveFolderTraverser"
+     provides="zope.publisher.interfaces.browser.IPublishTraverse"
      permission="zope.Public"
      />
 
