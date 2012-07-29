@@ -1,0 +1,14 @@
+#!/bin/sh
+
+update_egg()
+{
+    echo "Start update $@"
+
+    bin/i18nextract && \
+    bin/i18nmergeall && \
+    msgfmt ${1}/locales/nl/LC_MESSAGES/${2}.po -o ${1}/locales/nl/LC_MESSAGES/${2}.mo --no-hash && \
+    msgfmt ${1}/locales/en/LC_MESSAGES/${2}.po -o ${1}/locales/en/LC_MESSAGES/${2}.mo --no-hash && \
+    msgfmt ${1}/locales/ru/LC_MESSAGES/${2}.po -o ${1}/locales/ru/LC_MESSAGES/${2}.mo --no-hash
+}
+
+update_egg src/zojax/containertraverser zojax.containertraverser;

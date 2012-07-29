@@ -1,0 +1,58 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:i18n="http://namespaces.zope.org/i18n"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   xmlns:tales="http://namespaces.zope.org/tales"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:zcml="http://namespaces.zope.org/zcml"
+   i18n_domain="zojax.containertraverser">
+
+  <!-- containertraverser configlet -->
+  <configure
+     xmlns:zcml="http://namespaces.zope.org/zcml"
+     xmlns:browser="http://namespaces.zope.org/browser"
+     zcml:condition="installed zojax.controlpanel">
+
+    <include package="zojax.controlpanel" file="meta.zcml" />
+    <include package="zojax.controlpanel" />
+
+    <zojax:configlet
+       name="system.containertraverser"
+       schema=".interfaces.IContainerTraverserConfiglet"
+       title="Portal containertraverser"
+       description="Configure portal containertraverser.">
+      <allow interface=".interfaces.IContainerTraverserConfiglet" />
+    </zojax:configlet>
+
+  </configure>
+  <!--
+  <interface interface=".interfaces.ICustomContainerTraverser" name="ICustomContainerTraverser"/>
+
+  <class class="zojax.contenttype.document.document.Document">
+    <implements interface=".interfaces.ICustomContainerTraverser"/>
+  </class>
+  <view 
+     for=".ICaseInsensitiveFolder" 
+     type="zope.publisher.interfaces.browser.IBrowserRequest" 
+     factory=".traverser.CustomContainerTraverser"
+     provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+     permission="zope.Public" 
+     /> 
+
+  -->
+
+  <class class="zope.app.folder.folder.Folder">
+    <implements interface=".ICaseInsensitiveFolder"/>
+  </class>
+  <view
+     for="*"
+     type="zope.publisher.interfaces.browser.IBrowserRequest"
+     factory=".CaseInsensitiveFolderTraverser"
+     provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+     permission="zope.Public"
+     />
+
+  <!-- translations -->
+
+  <i18n:registerTranslations directory="locales"/>
+</configure>

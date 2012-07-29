@@ -1,0 +1,4 @@
+#!/bin/sh
+# Startup or shutdown buildbot
+
+bin/i18ndude find-untranslated ./ | grep zojax.containertraverser | less
