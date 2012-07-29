@@ -25,15 +25,15 @@ from zope.app.folder.interfaces import IFolder
 _ = MessageFactory('zojax.containertraverser')
 
 
-class IContainerTraverserConfiglet(interface.Interface):
+class ICaseInsensitiveConfiglet(interface.Interface):
     """ container traverser configlet schema """
 
-    isNonCaseSencetiveTraverser = schema.Bool(
+    isNonCaseInsensitive = schema.Bool(
         title = _('Enabled portal non case censative traverser'),
         default = False,
         required = True)
 
-class ICaseInsensitiveFolder(Interface):
+class ICaseInsensitiveFolder(ISimpleReadContainer):
      """Marker for folders whose contained items keys are case insensitive.
 
      When traversing in this folder, all names will be converted to lower

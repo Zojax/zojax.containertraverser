@@ -18,30 +18,19 @@
 
     <zojax:configlet
        name="system.containertraverser"
-       schema=".interfaces.IContainerTraverserConfiglet"
+       schema=".interfaces.ICaseInsensitiveConfiglet"
        title="Portal containertraverser"
        description="Configure portal containertraverser.">
-      <allow interface=".interfaces.IContainerTraverserConfiglet" />
+      <allow interface=".interfaces.ICaseInsensitiveConfiglet" />
     </zojax:configlet>
 
   </configure>
-  <!--
-  <interface interface=".interfaces.ICustomContainerTraverser" name="ICustomContainerTraverser"/>
 
-  <class class="zojax.contenttype.document.document.Document">
+  <class class="zojax.content.space.content.ContentSpace">
     <implements interface=".interfaces.ICaseInsensitiveFolder"/>
   </class>
-  <view 
-     for=".ICaseInsensitiveFolder" 
-     type="zope.publisher.interfaces.browser.IBrowserRequest" 
-     factory=".traverser.CustomContainerTraverser"
-     provides="zope.publisher.interfaces.browser.IBrowserPublisher"
-     permission="zope.Public" 
-     /> 
 
-  -->
-
-  <class class="zojax.folder.folder.Folder">
+  <class class="zojax.content.type.container.ContentContainer">
     <implements interface=".interfaces.ICaseInsensitiveFolder"/>
   </class>
 
