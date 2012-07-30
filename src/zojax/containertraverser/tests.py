@@ -44,7 +44,7 @@ class InsensitiveCaseTraverserTest(test_containertraverser.TraverserTest):
     def _getTraverser(self, context, request):
         class FakeCaseInsensitiveConfiglet(object):
             implements(ICaseInsensitiveConfiglet)
-            isNonCaseInsensitive = False
+            isNonCaseInsensitive = True
 
         gsm = getGlobalSiteManager()
         fakeCIC = FakeCaseInsensitiveConfiglet()
