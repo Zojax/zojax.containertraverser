@@ -19,8 +19,8 @@
     <zojax:configlet
        name="system.containertraverser"
        schema=".interfaces.ICaseInsensitiveConfiglet"
-       title="Portal containertraverser"
-       description="Configure portal containertraverser.">
+       title="Portal case insensitive traverser"
+       description="Configure portal case insensitive traverser.">
       <allow interface=".interfaces.ICaseInsensitiveConfiglet" />
     </zojax:configlet>
 
