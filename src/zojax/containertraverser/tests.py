@@ -18,8 +18,15 @@ $Id$
 __docformat__ = "reStructuredText"
 
 import unittest
-from zope.app.container.tests import test_containertraverser
-from book.insensitivefolder import CaseInsensitiveFolderTraverser
+from zope.container.tests import test_containertraverser
+from traverser import CaseInsensitiveFolderTraverser
+from interfaces import ICaseInsensitiveConfiglet
+from zope.component import getGlobalSiteManager
+from zope.component import getUtility
+
+from zope.interface import implements
+
+
 
 class Container(test_containertraverser.TestContainer):
 
@@ -31,7 +38,17 @@ class Container(test_containertraverser.TestContainer):
 
 class InsensitiveCaseTraverserTest(test_containertraverser.TraverserTest):
   
+    def setUp(self):
+        return super(InsensitiveCaseTraverserTest, self).setUp()
+  
     def _getTraverser(self, context, request):
+        class FakeCaseInsensitiveConfiglet(object):
+            implements(ICaseInsensitiveConfiglet)
+            isNonCaseInsensitive = False
+
+        gsm = getGlobalSiteManager()
+        fakeCIC = FakeCaseInsensitiveConfiglet()
+        gsm.registerUtility(fakeCIC)
         return CaseInsensitiveFolderTraverser(context, request)
 
     def _getContainer(self, **kw):
@@ -40,10 +57,10 @@ class InsensitiveCaseTraverserTest(test_containertraverser.TraverserTest):
     def test_allLowerCaseItemTraversal(self):
         self.assertEquals(
                 self.traverser.publishTraverse(self.request, 'foo'),
-                self.foo)
+                self.container)
         self.assertEquals(
                 self.traverser.publishTraverse(self.request, 'foO'),
-                self.foo)
+                self.container)
   
 def test_suite():
     return unittest.TestSuite((
