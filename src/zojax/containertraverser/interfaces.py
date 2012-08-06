@@ -29,7 +29,7 @@ class ICaseInsensitiveConfiglet(interface.Interface):
     """ container traverser configlet schema """
 
     isNonCaseInsensitive = schema.Bool(
-        title = _('Enabled portal non case censative traverser'),
+        title = _('Enable portal case insensitive traverser'),
         default = False,
         required = True)
 
