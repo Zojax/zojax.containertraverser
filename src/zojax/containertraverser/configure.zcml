@@ -26,16 +26,6 @@
 
   </configure>
 
-<!-- Examples
-  <class class="zojax.content.space.content.ContentSpace">
-    <implements interface=".interfaces.ICaseInsensitiveFolder"/>
-  </class>
-
-  <class class="zojax.content.type.container.ContentContainer">
-    <implements interface=".interfaces.ICaseInsensitiveFolder"/>
-  </class>
--->
-
   <adapter
      for=".interfaces.ICaseInsensitiveFolder zope.publisher.interfaces.browser.IBrowserRequest"
      factory=".traverser.CaseInsensitiveFolderTraverser"
