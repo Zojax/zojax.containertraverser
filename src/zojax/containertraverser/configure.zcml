@@ -5,7 +5,10 @@
    xmlns:tales="http://namespaces.zope.org/tales"
    xmlns:browser="http://namespaces.zope.org/browser"
    xmlns:zcml="http://namespaces.zope.org/zcml"
+   xmlns:monkey="http://namespaces.plone.org/monkey"
    i18n_domain="zojax.containertraverser">
+
+   <include package="collective.monkeypatcher" />
 
   <!-- containertraverser configlet -->
   <configure
@@ -32,6 +35,22 @@
      provides="zope.publisher.interfaces.browser.IPublishTraverse"
      permission="zope.Public"
      />
+
+  <monkey:patch
+      description="I don't know how to disable redirect or how to handle with case insensitive for ISite"
+      class="zope.app.publication.publicationtraverse.PublicationTraverse"
+      original="traverseName"
+      replacement=".traverser.patchedTraverseName"
+      />
+
+<!--
+  <adapter
+     for="zope.location.interfaces.ISite zope.publisher.interfaces.browser.IBrowserRequest"
+     factory=".traverser.CaseInsensitiveFolderTraverser"
+     provides="zope.publisher.interfaces.browser.IPublishTraverse"
+     permission="zope.Public"
+     />
+-->
 
   <!-- translations -->
 

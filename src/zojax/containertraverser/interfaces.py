@@ -18,9 +18,10 @@ $Id$
 from zope.publisher.interfaces import INotFound
 from zope import schema, interface
 from zope.i18nmessageid import MessageFactory
-from zope.app.container.interfaces import ISimpleReadContainer
+from zope.app.container.interfaces import ISimpleReadContainer, IItemContainer
 from zope.interface import Interface
 from zope.app.folder.interfaces import IFolder
+from zope.location.interfaces import ISite
 
 _ = MessageFactory('zojax.containertraverser')
 
