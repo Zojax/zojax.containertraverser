@@ -62,9 +62,12 @@ def patchedTraverseName(self, request, ob, name):
                                     default=self)
         if adapter is not self:
             if getUtility(ICaseInsensitiveConfiglet).isNonCaseInsensitive:
-                for key in removeSecurityProxy(ob).keys():
-                    if key.lower() == name.lower():
-                        nm = key
+                try:
+                    for key in removeSecurityProxy(ob).keys():
+                        if key.lower() == name.lower():
+                            nm = key
+                except AttributeError:
+                    pass
             ob2 = adapter.publishTraverse(request, nm)
         else:
             raise NotFound(ob, name, request)
