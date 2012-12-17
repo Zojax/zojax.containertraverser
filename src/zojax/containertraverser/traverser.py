@@ -46,7 +46,7 @@ def patchedTraverseName(self, request, ob, name):
         if ns:
             try:
                 ob2 = namespaceLookup(ns, nm, ob, request)
-            except TraversalError:
+            except (TraversalError, ValueError), e:
                 raise NotFound(ob, name)
 
             return ProxyFactory(ob2)
