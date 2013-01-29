@@ -18,11 +18,10 @@ $Id$
 __docformat__ = "reStructuredText"
 
 import unittest
-from zope.container.tests import test_containertraverser
+from zope.app.container.tests import test_containertraverser
 from traverser import CaseInsensitiveFolderTraverser
 from interfaces import ICaseInsensitiveConfiglet
 from zope.component import getGlobalSiteManager
-from zope.component import getUtility
 
 from zope.interface import implements
 
@@ -57,10 +56,12 @@ class InsensitiveCaseTraverserTest(test_containertraverser.TraverserTest):
     def test_allLowerCaseItemTraversal(self):
         self.assertEquals(
                 self.traverser.publishTraverse(self.request, 'foo'),
-                self.container)
+                self.traverser.publishTraverse(self.request, 'FOO'))
+  
+    def test_allLowerCaseViewTraversal(self):
         self.assertEquals(
-                self.traverser.publishTraverse(self.request, 'foO'),
-                self.container)
+                self.traverser.publishTraverse(self.request, 'viewfoo').__class__,
+                self.traverser.publishTraverse(self.request, 'VIEWFOO').__class__)
   
 def test_suite():
     return unittest.TestSuite((

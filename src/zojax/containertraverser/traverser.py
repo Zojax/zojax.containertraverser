@@ -1,18 +1,14 @@
-from zope.publisher.interfaces import NotFound 
-
+from interfaces import ICaseInsensitiveFolder, ICaseInsensitiveConfiglet
 from zope.app import zapi 
 from zope.app.container.traversal import ContainerTraverser
-from interfaces import ICaseInsensitiveFolder, ICaseInsensitiveConfiglet
 from zope.component import getUtility, queryMultiAdapter
-from zope.interface import Interface, providedBy
-from zope.app.apidoc.presentation import getViews
-
+from zope.component._api import getAdapters
+from zope.interface import Interface
+from zope.publisher.interfaces import IPublishTraverse, NotFound 
 from zope.security.checker import ProxyFactory
 from zope.security.proxy import removeSecurityProxy
-from zope.traversing.namespace import namespaceLookup
-from zope.traversing.namespace import nsParse
 from zope.traversing.interfaces import TraversalError
-from zope.publisher.interfaces import IPublishTraverse
+from zope.traversing.namespace import namespaceLookup, nsParse
 
 
 class CaseInsensitiveFolderTraverser(ContainerTraverser):
@@ -28,10 +24,9 @@ class CaseInsensitiveFolderTraverser(ContainerTraverser):
                 view = queryMultiAdapter((self.context, request), name=view_name)
                 if view is not None:
                     return view 
+                raise NotFound(self.context, name, request)
             return subob
 
-        return super(CaseInsensitiveFolderTraverser, self).publishTraverse(request, name)
-  
     def _guessTraverse(self, name):
         for key in getattr(self.context, 'keys', list)():
             if key.lower() == name.lower():
@@ -39,9 +34,9 @@ class CaseInsensitiveFolderTraverser(ContainerTraverser):
         return None
 
     def _guessTraverseView(self, name):
-        for view in getViews(providedBy(self.context), Interface):
-            if view.name.lower() == name.lower():
-                return view.name
+        for view in getAdapters((self.context, self.request), Interface):
+            if view[0].lower() == name.lower():
+                return view[0]
         return None
 
 def patchedTraverseName(self, request, ob, name):
