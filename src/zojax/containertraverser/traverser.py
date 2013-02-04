@@ -1,15 +1,13 @@
 from interfaces import ICaseInsensitiveFolder, ICaseInsensitiveConfiglet
 from zope.app import zapi 
 from zope.app.container.traversal import ContainerTraverser
-from zope.component import getUtility, queryMultiAdapter
-from zope.component._api import getAdapters
-from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse, NotFound 
 from zope.security.checker import ProxyFactory
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.interfaces import TraversalError
 from zope.traversing.namespace import namespaceLookup, nsParse
 
+from zope import component, interface
 
 class CaseInsensitiveFolderTraverser(ContainerTraverser):
 
@@ -17,11 +15,11 @@ class CaseInsensitiveFolderTraverser(ContainerTraverser):
 
     def publishTraverse(self, request, name):
         """See zope.publisher.interfaces.browser.IBrowserPublisher"""
-        if getUtility(ICaseInsensitiveConfiglet).isNonCaseInsensitive:
+        if component.getUtility(ICaseInsensitiveConfiglet).isNonCaseInsensitive:
             subob = self._guessTraverse(name)
             if subob is None:
                 view_name = self._guessTraverseView(name)
-                view = queryMultiAdapter((self.context, request), name=view_name)
+                view = component.queryMultiAdapter((self.context, request), name=view_name)
                 if view is not None:
                     return view 
                 raise NotFound(self.context, name, request)
@@ -34,7 +32,8 @@ class CaseInsensitiveFolderTraverser(ContainerTraverser):
         return None
 
     def _guessTraverseView(self, name):
-        for view in getAdapters((self.context, self.request), Interface):
+        sitemanager = component._api.getSiteManager(self.context)
+        for view in sitemanager.adapters.lookupAll(map(interface.providedBy, (self.context, self.request)), interface.Interface):
             if view[0].lower() == name.lower():
                 return view[0]
         return None
@@ -59,10 +58,10 @@ def patchedTraverseName(self, request, ob, name):
         ob2 = ob.publishTraverse(request, nm)
     else:
         # self is marker
-        adapter = queryMultiAdapter((ob, request), IPublishTraverse,
+        adapter = component.queryMultiAdapter((ob, request), IPublishTraverse,
                                     default=self)
         if adapter is not self:
-            if getUtility(ICaseInsensitiveConfiglet).isNonCaseInsensitive:
+            if component.getUtility(ICaseInsensitiveConfiglet).isNonCaseInsensitive:
                 try:
                     for key in removeSecurityProxy(ob).keys():
                         if key.lower() == name.lower():
